@@ -1,12 +1,11 @@
 public class Snake implements Cloneable {
-    int positionx;
-    int positiony;
+    int positionX;
+    int positionY;
     boolean head;
 
     public void snake(int positionx, int positiony) {
-        this.positionx = positionx;
-        this.positiony = positiony;
-        this.head = head;
+        this.positionX = positionx;
+        this.positionY = positiony;
     }
 
     public Snake clone() throws CloneNotSupportedException {
