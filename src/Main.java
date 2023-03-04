@@ -24,38 +24,41 @@ import java.util.HashMap;
 public class Main {
     public static void main(String[] args) throws IOException, CloneNotSupportedException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+        HashMap<Integer, Snake> snake = new HashMap<>();
         GameField gameField = new GameField();
-        gameField.createGameField();
         SnakeActions actions = new SnakeActions();
-        HashMap<Integer, Snake> snake = new HashMap();
+
+        gameField.createOrRefreshGameField();
         snake = actions.create(snake, gameField);
         gameField.addSnake(snake);
         gameField.display();
+
         boolean game = true;
         while (game) {
             String action = reader.readLine();
             switch (action) {
                 case "w" -> {
                     snake = actions.movUp(snake, gameField);
-                    gameField.createGameField();
+                    gameField.createOrRefreshGameField();
                     gameField.addSnake(snake);
                     gameField.display();
                 }
                 case "a" -> {
                     snake = actions.movLeft(snake, gameField);
-                    gameField.createGameField();
+                    gameField.createOrRefreshGameField();
                     gameField.addSnake(snake);
                     gameField.display();
                 }
                 case "s" -> {
                     snake = actions.movDown(snake, gameField);
-                    gameField.createGameField();
+                    gameField.createOrRefreshGameField();
                     gameField.addSnake(snake);
                     gameField.display();
                 }
                 case "d" -> {
                     snake = actions.movRight(snake, gameField);
-                    gameField.createGameField();
+                    gameField.createOrRefreshGameField();
                     gameField.addSnake(snake);
                     gameField.display();
                 }
