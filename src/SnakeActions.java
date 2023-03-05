@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.HashMap;
 
 public class SnakeActions {
@@ -30,13 +31,9 @@ public class SnakeActions {
         return goAction(snake, field, SNAKE_ACTION.DOWN, apple);
     }
 
-    private HashMap<Integer, Snake> goAction(HashMap<Integer, Snake> snake, GameField field, SNAKE_ACTION action, Apple apple) throws CloneNotSupportedException{
+    private HashMap<Integer, Snake> goAction(HashMap<Integer, Snake> snake, GameField field, SNAKE_ACTION action, Apple apple) throws CloneNotSupportedException {
         HashMap<Integer, Snake> result = new HashMap<>();
         Snake head = snake.get(0).clone();
-        //debug info
-        System.out.println("Score: " + apple.score);
-        System.out.println("X: " + apple.positionX);
-        System.out.println("Y: " + apple.positionY);
 
         switch (action) {
             case DOWN, END -> {
@@ -72,15 +69,39 @@ public class SnakeActions {
         }
         snake = result;
         snake.get(1).head = false;
-        if((apple.positionY == head.positionY) && (apple.positionX == head.positionX)){eatApple(snake,apple,field);}
-         else snake.remove(snake.size() - 1);
+        if ((apple.positionY == head.positionY) && (apple.positionX == head.positionX)) {
+            eatApple(snake, apple, field);
+        } else snake.remove(snake.size() - 1);
         return snake;
     }
 
-    private void eatApple(HashMap<Integer, Snake> snake, Apple apple, GameField field){
+    private void eatApple(HashMap<Integer, Snake> snake, Apple apple, GameField field) {
         apple.score++;
         field.addApple(snake, apple);
     }
+
+    public void isDead(HashMap<Integer, Snake> snake) throws CloneNotSupportedException {
+        Snake head = snake.get(0).clone();
+        head.head = false;
+        HashMap<Integer, Snake> body = new HashMap<>(snake);
+        body.remove(0);
+        body.forEach((key,value) -> {
+            if((value.positionX == head.positionX) && (value.positionY == head.positionY)) printDeath();
+        });
+    }
+
+    private void printDeath(){
+        try {
+            FileReader fileReader = new FileReader("./src/Death.txt");
+            int c;
+            while ((c = fileReader.read()) != -1) {
+                System.out.print((char) c);
+            }
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
 
     private enum SNAKE_ACTION {
         START, END, UP, DOWN
