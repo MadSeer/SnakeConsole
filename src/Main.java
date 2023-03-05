@@ -31,33 +31,47 @@ public class Main {
 
         gameField.createOrRefreshGameField();
         snake = actions.create(snake, gameField);
-        gameField.addSnake(snake);
-        gameField.display();
+        actions.currentSnake = snake;
+
+        Runnable r = () -> {
+            while (true) {
+                try {
+                    HashMap<Integer, Snake> newSnake = actions.goHotbKuda(gameField);
+                    gameField.createOrRefreshGameField();
+                    gameField.addSnake(newSnake);
+                    gameField.display();
+                    Thread.sleep(actions.currentSnakeSpeed);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+        new Thread(r, "thread").start();
 
         boolean game = true;
         while (game) {
             String action = reader.readLine();
             switch (action) {
                 case "w" -> {
-                    snake = actions.movUp(snake, gameField);
+                    snake = actions.movUp(actions.currentSnake, gameField);
                     gameField.createOrRefreshGameField();
                     gameField.addSnake(snake);
                     gameField.display();
                 }
                 case "a" -> {
-                    snake = actions.movLeft(snake, gameField);
+                    snake = actions.movLeft(actions.currentSnake, gameField);
                     gameField.createOrRefreshGameField();
                     gameField.addSnake(snake);
                     gameField.display();
                 }
                 case "s" -> {
-                    snake = actions.movDown(snake, gameField);
+                    snake = actions.movDown(actions.currentSnake, gameField);
                     gameField.createOrRefreshGameField();
                     gameField.addSnake(snake);
                     gameField.display();
                 }
                 case "d" -> {
-                    snake = actions.movRight(snake, gameField);
+                    snake = actions.movRight(actions.currentSnake, gameField);
                     gameField.createOrRefreshGameField();
                     gameField.addSnake(snake);
                     gameField.display();

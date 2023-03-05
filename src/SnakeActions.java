@@ -1,6 +1,10 @@
 import java.util.HashMap;
 
 public class SnakeActions {
+
+    public HashMap<Integer, Snake> currentSnake = new HashMap<>();
+    private SNAKE_ACTION currentAction = SNAKE_ACTION.END;
+    public int currentSnakeSpeed = 500;
     public HashMap<Integer, Snake> create(HashMap<Integer, Snake> snake, GameField field) {
         int i = 0;
         while (snake.size() < 5) {
@@ -14,19 +18,32 @@ public class SnakeActions {
         return snake;
     }
 
+    public HashMap<Integer, Snake> goHotbKuda(GameField gameField) {
+        try {
+            return goAction(currentSnake,gameField,currentAction);
+        } catch (Exception e) {
+
+        }
+        return null;
+    }
+
     public HashMap<Integer, Snake> movUp(HashMap<Integer, Snake> snake, GameField field) throws CloneNotSupportedException {
+        currentAction = SNAKE_ACTION.UP;
         return goAction(snake, field, SNAKE_ACTION.UP);
     }
 
     public HashMap<Integer, Snake> movLeft(HashMap<Integer, Snake> snake, GameField field) throws CloneNotSupportedException {
+        currentAction = SNAKE_ACTION.START;
         return goAction(snake, field, SNAKE_ACTION.START);
     }
 
     public HashMap<Integer, Snake> movRight(HashMap<Integer, Snake> snake, GameField field) throws CloneNotSupportedException {
+        currentAction = SNAKE_ACTION.END;
         return goAction(snake, field, SNAKE_ACTION.END);
     }
 
     public HashMap<Integer, Snake> movDown(HashMap<Integer, Snake> snake, GameField field) throws CloneNotSupportedException {
+        currentAction = SNAKE_ACTION.DOWN;
         return goAction(snake, field, SNAKE_ACTION.DOWN);
     }
 
@@ -69,6 +86,7 @@ public class SnakeActions {
         snake = result;
         snake.get(1).head = false;
         snake.remove(snake.size() - 1);
+        currentSnake = snake;
         return snake;
     }
 
