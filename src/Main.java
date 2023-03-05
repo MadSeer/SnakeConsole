@@ -7,7 +7,7 @@ import java.util.HashMap;
                               Часов потрачено:
                                                Madseer:
                                                         04.03.2023 +-7 (да, я тупой)
-                                                        05.03.2023
+                                                        05.03.2023 5
                               Нужно сделать:
 
                                         - Изменить голову змейки на Стринг,
@@ -47,7 +47,7 @@ public class Main {
             gameField.createOrRefreshGameField();
             gameField.addSnake(snake);
             gameField.display(apple);
-            actions.isDead(snake);
+            actions.isDead(snake, apple);
         }
 
     }

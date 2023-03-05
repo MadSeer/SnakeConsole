@@ -80,17 +80,18 @@ public class SnakeActions {
         field.addApple(snake, apple);
     }
 
-    public void isDead(HashMap<Integer, Snake> snake) throws CloneNotSupportedException {
+    public void isDead(HashMap<Integer, Snake> snake, Apple apple) throws CloneNotSupportedException {
         Snake head = snake.get(0).clone();
         head.head = false;
         HashMap<Integer, Snake> body = new HashMap<>(snake);
         body.remove(0);
         body.forEach((key,value) -> {
-            if((value.positionX == head.positionX) && (value.positionY == head.positionY)) printDeath();
+            if((value.positionX == head.positionX) && (value.positionY == head.positionY)) printDeath(apple);
         });
     }
 
-    private void printDeath(){
+    private void printDeath(Apple apple){
+        System.out.println("");
         try {
             FileReader fileReader = new FileReader("./src/Death.txt");
             int c;
@@ -100,6 +101,14 @@ public class SnakeActions {
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
+        System.out.println("""
+                
+                
+                                ИГРА ОКОНЧЕНА
+                
+                """
+                + "           Ваш счёт: "
+                + apple.score);
     }
 
 
