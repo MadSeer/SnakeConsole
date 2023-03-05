@@ -1,7 +1,6 @@
 public class Apple implements Cloneable {
     int positionX;
     int positionY;
-    boolean head;
     int score;
 
 

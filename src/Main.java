@@ -28,39 +28,41 @@ public class Main {
         HashMap<Integer, Snake> snake = new HashMap<>();
         GameField gameField = new GameField();
         SnakeActions actions = new SnakeActions();
+        Apple apple = new Apple();
 
         gameField.createOrRefreshGameField();
         snake = actions.create(snake, gameField);
         gameField.addSnake(snake);
-        gameField.display();
+        gameField.addApple(snake, apple);
+        gameField.display(apple);
 
         boolean game = true;
         while (game) {
             String action = reader.readLine();
             switch (action) {
                 case "w" -> {
-                    snake = actions.movUp(snake, gameField);
+                    snake = actions.movUp(snake, gameField, apple);
                     gameField.createOrRefreshGameField();
                     gameField.addSnake(snake);
-                    gameField.display();
+                    gameField.display(apple);
                 }
                 case "a" -> {
-                    snake = actions.movLeft(snake, gameField);
+                    snake = actions.movLeft(snake, gameField,apple);
                     gameField.createOrRefreshGameField();
                     gameField.addSnake(snake);
-                    gameField.display();
+                    gameField.display(apple);
                 }
                 case "s" -> {
-                    snake = actions.movDown(snake, gameField);
+                    snake = actions.movDown(snake, gameField, apple);
                     gameField.createOrRefreshGameField();
                     gameField.addSnake(snake);
-                    gameField.display();
+                    gameField.display(apple);
                 }
                 case "d" -> {
-                    snake = actions.movRight(snake, gameField);
+                    snake = actions.movRight(snake, gameField, apple);
                     gameField.createOrRefreshGameField();
                     gameField.addSnake(snake);
-                    gameField.display();
+                    gameField.display(apple);
                 }
                 case "exit" -> game = false;
             }

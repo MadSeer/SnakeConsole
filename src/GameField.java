@@ -32,10 +32,9 @@ public class GameField {
         }
     }
 
-    public void addApple(Map<Integer, Snake> snake) {
+    public void addApple(Map<Integer, Snake> snake, Apple apple) {
         List<Snake> snakeModels = snake.values().stream().toList();
         Random random = new Random();
-        Apple apple = new Apple();
         boolean generate;
         do {
             generate = false;
@@ -51,7 +50,8 @@ public class GameField {
         } while(generate);
     }
 
-    public void display() {
+    public void display(Apple apple) {
+        gameField[apple.positionY][apple.positionX] = APPLE_SYMBOL;
         for (String[] strings : gameField) {
             for (int j = 0; j < gameField.length; j++) {
                 System.out.print(strings[j] + "  ");

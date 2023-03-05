@@ -14,25 +14,29 @@ public class SnakeActions {
         return snake;
     }
 
-    public HashMap<Integer, Snake> movUp(HashMap<Integer, Snake> snake, GameField field) throws CloneNotSupportedException {
-        return goAction(snake, field, SNAKE_ACTION.UP);
+    public HashMap<Integer, Snake> movUp(HashMap<Integer, Snake> snake, GameField field, Apple apple) throws CloneNotSupportedException {
+        return goAction(snake, field, SNAKE_ACTION.UP, apple);
     }
 
-    public HashMap<Integer, Snake> movLeft(HashMap<Integer, Snake> snake, GameField field) throws CloneNotSupportedException {
-        return goAction(snake, field, SNAKE_ACTION.START);
+    public HashMap<Integer, Snake> movLeft(HashMap<Integer, Snake> snake, GameField field, Apple apple) throws CloneNotSupportedException {
+        return goAction(snake, field, SNAKE_ACTION.START, apple);
     }
 
-    public HashMap<Integer, Snake> movRight(HashMap<Integer, Snake> snake, GameField field) throws CloneNotSupportedException {
-        return goAction(snake, field, SNAKE_ACTION.END);
+    public HashMap<Integer, Snake> movRight(HashMap<Integer, Snake> snake, GameField field, Apple apple) throws CloneNotSupportedException {
+        return goAction(snake, field, SNAKE_ACTION.END, apple);
     }
 
-    public HashMap<Integer, Snake> movDown(HashMap<Integer, Snake> snake, GameField field) throws CloneNotSupportedException {
-        return goAction(snake, field, SNAKE_ACTION.DOWN);
+    public HashMap<Integer, Snake> movDown(HashMap<Integer, Snake> snake, GameField field, Apple apple) throws CloneNotSupportedException {
+        return goAction(snake, field, SNAKE_ACTION.DOWN, apple);
     }
 
-    private HashMap<Integer, Snake> goAction(HashMap<Integer, Snake> snake, GameField field, SNAKE_ACTION action) throws CloneNotSupportedException{
+    private HashMap<Integer, Snake> goAction(HashMap<Integer, Snake> snake, GameField field, SNAKE_ACTION action, Apple apple) throws CloneNotSupportedException{
         HashMap<Integer, Snake> result = new HashMap<>();
         Snake head = snake.get(0).clone();
+        //debug info
+        System.out.println("Score: " + apple.score);
+        System.out.println("X: " + apple.positionX);
+        System.out.println("Y: " + apple.positionY);
 
         switch (action) {
             case DOWN, END -> {
@@ -68,12 +72,14 @@ public class SnakeActions {
         }
         snake = result;
         snake.get(1).head = false;
-        snake.remove(snake.size() - 1);
+        if((apple.positionY == head.positionY) && (apple.positionX == head.positionX)){eatApple(snake,apple,field);}
+         else snake.remove(snake.size() - 1);
         return snake;
     }
 
-    private void eatApple(HashMap<Integer, Snake> snake, Apple apple){
-
+    private void eatApple(HashMap<Integer, Snake> snake, Apple apple, GameField field){
+        apple.score++;
+        field.addApple(snake, apple);
     }
 
     private enum SNAKE_ACTION {
