@@ -1,7 +1,4 @@
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class GameField {
     private String[][] gameField;
@@ -9,6 +6,7 @@ public class GameField {
 
     private final static String HEAD_SYMBOL = "#";
     private final static String BODY_SYMBOL = "*";
+    private final static String APPLE_SYMBOL = "A";
     private final static String GAME_FIELD_SYMBOL = ".";
     private final static int GAME_FIELD_SIZE = 25;
 
@@ -32,6 +30,25 @@ public class GameField {
                 }
             }
         }
+    }
+
+    public void addApple(Map<Integer, Snake> snake) {
+        List<Snake> snakeModels = snake.values().stream().toList();
+        Random random = new Random();
+        Apple apple = new Apple();
+        boolean generate;
+        do {
+            generate = false;
+            apple.positionX = random.nextInt(GAME_FIELD_SIZE);
+            apple.positionY = random.nextInt(GAME_FIELD_SIZE);
+                for (Snake model:
+                     snakeModels) {
+                    if ((apple.positionX == model.positionX) && (apple.positionY == model.positionY)) {
+                        generate = true;
+                        break;
+                    }
+                }
+        } while(generate);
     }
 
     public void display() {

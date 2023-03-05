@@ -72,6 +72,10 @@ public class SnakeActions {
         return snake;
     }
 
+    private void eatApple(HashMap<Integer, Snake> snake, Apple apple){
+
+    }
+
     private enum SNAKE_ACTION {
         START, END, UP, DOWN
     }
