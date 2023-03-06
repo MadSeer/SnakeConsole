@@ -37,24 +37,23 @@ public class Main {
         gameField.addApple(snake, apple);
         gameField.display(apple);
 
-        AtomicReference<HashMap<Integer, Snake>> newSnake = new AtomicReference<>(actions.repeat(actions.currentSnake, gameField, apple));
+        AtomicReference<HashMap<Integer, Snake>> newSnake = new AtomicReference<>(actions.repeat(gameField));
 
         Runnable r = () -> {
-            while (true) {
+            boolean isDead = false;
+            while (!isDead) {
                 try {
-                    newSnake.set(actions.repeat(actions.currentSnake, gameField, actions.currentApple));
+                    newSnake.set(actions.repeat(gameField));
                     gameField.createOrRefreshGameField();
                     gameField.addSnake(newSnake.get());
                     gameField.display(actions.currentApple);
-                    actions.isDead(newSnake.get(), actions.currentApple);
+                    isDead=actions.isDead(newSnake.get(), actions.currentApple);
                     Thread.sleep(actions.currentSnakeSpeed);
                     System.out.println("""
                             
                            ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
                             """);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                } catch (CloneNotSupportedException e) {
+                } catch (InterruptedException | CloneNotSupportedException e) {
                     throw new RuntimeException(e);
                 }
             }

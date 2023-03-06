@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.HashMap;
 
 public class SnakeActions {
-
+    public boolean isDead = false;
     public HashMap<Integer, Snake> currentSnake = new HashMap<>();
     public Apple currentApple = new Apple();
     private SNAKE_ACTION currentAction = SNAKE_ACTION.END;
@@ -21,7 +21,7 @@ public class SnakeActions {
         return snake;
     }
 
-    public HashMap<Integer,Snake> repeat(HashMap<Integer,Snake> snake, GameField field, Apple apple) throws CloneNotSupportedException {
+    public HashMap<Integer,Snake> repeat(GameField field) throws CloneNotSupportedException {
         return goAction(currentSnake,field,currentAction,currentApple);
     }
 
@@ -92,18 +92,22 @@ public class SnakeActions {
         field.addApple(snake, apple);
     }
 
-    public void isDead(HashMap<Integer, Snake> snake, Apple apple) throws CloneNotSupportedException {
+    public boolean isDead(HashMap<Integer, Snake> snake, Apple apple) throws CloneNotSupportedException {
         Snake head = snake.get(0).clone();
         head.head = false;
         HashMap<Integer, Snake> body = new HashMap<>(snake);
         body.remove(0);
         body.forEach((key,value) -> {
-            if((value.positionX == head.positionX) && (value.positionY == head.positionY)) printDeath(apple);
+            if((value.positionX == head.positionX) && (value.positionY == head.positionY)) {
+                printDeath(apple);
+                isDead = true;
+            }
         });
+        return isDead;
     }
 
     private void printDeath(Apple apple){
-        System.out.println("");
+        System.out.println();
         try {
             FileReader fileReader = new FileReader("./src/Death.txt");
             int c;
