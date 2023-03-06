@@ -90,6 +90,7 @@ public class SnakeActions {
     private void eatApple(HashMap<Integer, Snake> snake, Apple apple, GameField field) {
         apple.score++;
         field.addApple(snake, apple);
+        currentSnakeSpeed -= 50;
     }
 
     public boolean isDead(HashMap<Integer, Snake> snake, Apple apple) throws CloneNotSupportedException {
