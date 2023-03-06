@@ -4,22 +4,19 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 /*
                               Добро пожаловать в мою каловую массу
-                              Часов потрачено: +-7 (да, я тупой)
+                              Часов потрачено:
+                                               Madseer:
+                                                        04.03.2023 +-7 (да, я тупой)
+                                                        05.03.2023 5
                               Нужно сделать:
-                                        - Функция очитски поля, чтобы не
-                                        создавать каждый раз новое ИЛИ
-                                        переписать функцию добавления змейки
-                                        на поле так, чтобы она удаляла преды-
-                                        дущее местоположение
+
                                         - Изменить голову змейки на Стринг,
                                         чтобы движения в стороны были красивее
                                         - Запретить движение в противоположную
                                         сторону
-                                        - Добавить функцию съедания хвоста
-                                        - Добавить функцию съедания яблока и
-                                        само яблоко
                                         - Подключить библиотеку для работы с
                                         цветом
+                                        - Подключить игру в реальном времени
 */
 public class Main {
     public static void main(String[] args) throws IOException, CloneNotSupportedException {
@@ -28,42 +25,29 @@ public class Main {
         HashMap<Integer, Snake> snake = new HashMap<>();
         GameField gameField = new GameField();
         SnakeActions actions = new SnakeActions();
+        Apple apple = new Apple();
 
         gameField.createOrRefreshGameField();
         snake = actions.create(snake, gameField);
         gameField.addSnake(snake);
-        gameField.display();
+        gameField.addApple(snake, apple);
+        gameField.display(apple);
 
         boolean game = true;
         while (game) {
             String action = reader.readLine();
             switch (action) {
-                case "w" -> {
-                    snake = actions.movUp(snake, gameField);
-                    gameField.createOrRefreshGameField();
-                    gameField.addSnake(snake);
-                    gameField.display();
-                }
-                case "a" -> {
-                    snake = actions.movLeft(snake, gameField);
-                    gameField.createOrRefreshGameField();
-                    gameField.addSnake(snake);
-                    gameField.display();
-                }
-                case "s" -> {
-                    snake = actions.movDown(snake, gameField);
-                    gameField.createOrRefreshGameField();
-                    gameField.addSnake(snake);
-                    gameField.display();
-                }
-                case "d" -> {
-                    snake = actions.movRight(snake, gameField);
-                    gameField.createOrRefreshGameField();
-                    gameField.addSnake(snake);
-                    gameField.display();
-                }
+                case "w" -> snake = actions.movUp(snake, gameField, apple);
+                case "a" -> snake = actions.movLeft(snake, gameField,apple);
+                case "s" -> snake = actions.movDown(snake, gameField, apple);
+                case "d" -> snake = actions.movRight(snake, gameField, apple);
                 case "exit" -> game = false;
+                default -> throw new IllegalStateException("Unexpected value: " + action);
             }
+            gameField.createOrRefreshGameField();
+            gameField.addSnake(snake);
+            gameField.display(apple);
+            actions.isDead(snake, apple);
         }
 
     }

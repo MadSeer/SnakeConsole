@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.HashMap;
 
 public class SnakeActions {
@@ -14,23 +15,23 @@ public class SnakeActions {
         return snake;
     }
 
-    public HashMap<Integer, Snake> movUp(HashMap<Integer, Snake> snake, GameField field) throws CloneNotSupportedException {
-        return goAction(snake, field, SNAKE_ACTION.UP);
+    public HashMap<Integer, Snake> movUp(HashMap<Integer, Snake> snake, GameField field, Apple apple) throws CloneNotSupportedException {
+        return goAction(snake, field, SNAKE_ACTION.UP, apple);
     }
 
-    public HashMap<Integer, Snake> movLeft(HashMap<Integer, Snake> snake, GameField field) throws CloneNotSupportedException {
-        return goAction(snake, field, SNAKE_ACTION.START);
+    public HashMap<Integer, Snake> movLeft(HashMap<Integer, Snake> snake, GameField field, Apple apple) throws CloneNotSupportedException {
+        return goAction(snake, field, SNAKE_ACTION.START, apple);
     }
 
-    public HashMap<Integer, Snake> movRight(HashMap<Integer, Snake> snake, GameField field) throws CloneNotSupportedException {
-        return goAction(snake, field, SNAKE_ACTION.END);
+    public HashMap<Integer, Snake> movRight(HashMap<Integer, Snake> snake, GameField field, Apple apple) throws CloneNotSupportedException {
+        return goAction(snake, field, SNAKE_ACTION.END, apple);
     }
 
-    public HashMap<Integer, Snake> movDown(HashMap<Integer, Snake> snake, GameField field) throws CloneNotSupportedException {
-        return goAction(snake, field, SNAKE_ACTION.DOWN);
+    public HashMap<Integer, Snake> movDown(HashMap<Integer, Snake> snake, GameField field, Apple apple) throws CloneNotSupportedException {
+        return goAction(snake, field, SNAKE_ACTION.DOWN, apple);
     }
 
-    private HashMap<Integer, Snake> goAction(HashMap<Integer, Snake> snake, GameField field, SNAKE_ACTION action) throws CloneNotSupportedException{
+    private HashMap<Integer, Snake> goAction(HashMap<Integer, Snake> snake, GameField field, SNAKE_ACTION action, Apple apple) throws CloneNotSupportedException {
         HashMap<Integer, Snake> result = new HashMap<>();
         Snake head = snake.get(0).clone();
 
@@ -68,9 +69,48 @@ public class SnakeActions {
         }
         snake = result;
         snake.get(1).head = false;
-        snake.remove(snake.size() - 1);
+        if ((apple.positionY == head.positionY) && (apple.positionX == head.positionX)) {
+            eatApple(snake, apple, field);
+        } else snake.remove(snake.size() - 1);
         return snake;
     }
+
+    private void eatApple(HashMap<Integer, Snake> snake, Apple apple, GameField field) {
+        apple.score++;
+        field.addApple(snake, apple);
+    }
+
+    public void isDead(HashMap<Integer, Snake> snake, Apple apple) throws CloneNotSupportedException {
+        Snake head = snake.get(0).clone();
+        head.head = false;
+        HashMap<Integer, Snake> body = new HashMap<>(snake);
+        body.remove(0);
+        body.forEach((key,value) -> {
+            if((value.positionX == head.positionX) && (value.positionY == head.positionY)) printDeath(apple);
+        });
+    }
+
+    private void printDeath(Apple apple){
+        System.out.println("");
+        try {
+            FileReader fileReader = new FileReader("./src/Death.txt");
+            int c;
+            while ((c = fileReader.read()) != -1) {
+                System.out.print((char) c);
+            }
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        System.out.println("""
+                
+                
+                                ИГРА ОКОНЧЕНА
+                
+                """
+                + "           Ваш счёт: "
+                + apple.score);
+    }
+
 
     private enum SNAKE_ACTION {
         START, END, UP, DOWN
