@@ -2,6 +2,12 @@ import java.io.*;
 import java.util.HashMap;
 
 public class SnakeActions {
+
+    public HashMap<Integer, Snake> currentSnake = new HashMap<>();
+    public Apple currentApple = new Apple();
+    private SNAKE_ACTION currentAction = SNAKE_ACTION.END;
+    public int currentSnakeSpeed = 2000;
+
     public HashMap<Integer, Snake> create(HashMap<Integer, Snake> snake, GameField field) {
         int i = 0;
         while (snake.size() < 5) {
@@ -15,19 +21,43 @@ public class SnakeActions {
         return snake;
     }
 
+    public HashMap<Integer,Snake> repeat(HashMap<Integer,Snake> snake, GameField field, Apple apple) throws CloneNotSupportedException {
+        return goAction(currentSnake,field,currentAction,currentApple);
+    }
+
+    public void changeActionUp(){
+        currentAction = SNAKE_ACTION.UP;
+    }
+
+    public void changeActionLeft(){
+        currentAction = SNAKE_ACTION.START;
+    }
+
+    public void changeActionRight(){
+        currentAction = SNAKE_ACTION.END;
+    }
+
+    public void changeActionDown(){
+        currentAction = SNAKE_ACTION.DOWN;
+    }
+
     public HashMap<Integer, Snake> movUp(HashMap<Integer, Snake> snake, GameField field, Apple apple) throws CloneNotSupportedException {
+        currentAction = SNAKE_ACTION.UP;
         return goAction(snake, field, SNAKE_ACTION.UP, apple);
     }
 
     public HashMap<Integer, Snake> movLeft(HashMap<Integer, Snake> snake, GameField field, Apple apple) throws CloneNotSupportedException {
+        currentAction = SNAKE_ACTION.START;
         return goAction(snake, field, SNAKE_ACTION.START, apple);
     }
 
     public HashMap<Integer, Snake> movRight(HashMap<Integer, Snake> snake, GameField field, Apple apple) throws CloneNotSupportedException {
+        currentAction = SNAKE_ACTION.END;
         return goAction(snake, field, SNAKE_ACTION.END, apple);
     }
 
     public HashMap<Integer, Snake> movDown(HashMap<Integer, Snake> snake, GameField field, Apple apple) throws CloneNotSupportedException {
+        currentAction = SNAKE_ACTION.DOWN;
         return goAction(snake, field, SNAKE_ACTION.DOWN, apple);
     }
 
@@ -72,6 +102,8 @@ public class SnakeActions {
         if ((apple.positionY == head.positionY) && (apple.positionX == head.positionX)) {
             eatApple(snake, apple, field);
         } else snake.remove(snake.size() - 1);
+        currentSnake = snake;
+        currentApple = apple;
         return snake;
     }
 
