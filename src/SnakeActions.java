@@ -41,26 +41,6 @@ public class SnakeActions {
         currentAction = SNAKE_ACTION.DOWN;
     }
 
-    public HashMap<Integer, Snake> movUp(HashMap<Integer, Snake> snake, GameField field, Apple apple) throws CloneNotSupportedException {
-        currentAction = SNAKE_ACTION.UP;
-        return goAction(snake, field, SNAKE_ACTION.UP, apple);
-    }
-
-    public HashMap<Integer, Snake> movLeft(HashMap<Integer, Snake> snake, GameField field, Apple apple) throws CloneNotSupportedException {
-        currentAction = SNAKE_ACTION.START;
-        return goAction(snake, field, SNAKE_ACTION.START, apple);
-    }
-
-    public HashMap<Integer, Snake> movRight(HashMap<Integer, Snake> snake, GameField field, Apple apple) throws CloneNotSupportedException {
-        currentAction = SNAKE_ACTION.END;
-        return goAction(snake, field, SNAKE_ACTION.END, apple);
-    }
-
-    public HashMap<Integer, Snake> movDown(HashMap<Integer, Snake> snake, GameField field, Apple apple) throws CloneNotSupportedException {
-        currentAction = SNAKE_ACTION.DOWN;
-        return goAction(snake, field, SNAKE_ACTION.DOWN, apple);
-    }
-
     private HashMap<Integer, Snake> goAction(HashMap<Integer, Snake> snake, GameField field, SNAKE_ACTION action, Apple apple) throws CloneNotSupportedException {
         HashMap<Integer, Snake> result = new HashMap<>();
         Snake head = snake.get(0).clone();
@@ -142,7 +122,6 @@ public class SnakeActions {
                 + "           Ваш счёт: "
                 + apple.score);
     }
-
 
     private enum SNAKE_ACTION {
         START, END, UP, DOWN

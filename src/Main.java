@@ -32,6 +32,7 @@ public class Main {
         gameField.createOrRefreshGameField();
         snake = actions.create(snake, gameField);
         actions.currentSnake = snake;
+        actions.currentApple = apple;
         gameField.addSnake(snake);
         gameField.addApple(snake, apple);
         gameField.display(apple);
@@ -41,12 +42,16 @@ public class Main {
         Runnable r = () -> {
             while (true) {
                 try {
-                    newSnake.set(actions.repeat(actions.currentSnake, gameField, apple));
+                    newSnake.set(actions.repeat(actions.currentSnake, gameField, actions.currentApple));
                     gameField.createOrRefreshGameField();
                     gameField.addSnake(newSnake.get());
-                    gameField.display(apple);
-                    actions.isDead(newSnake.get(), apple);
+                    gameField.display(actions.currentApple);
+                    actions.isDead(newSnake.get(), actions.currentApple);
                     Thread.sleep(actions.currentSnakeSpeed);
+                    System.out.println("""
+                            
+                           ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+                            """);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 } catch (CloneNotSupportedException e) {
@@ -56,16 +61,10 @@ public class Main {
         };
         new Thread(r, "thread").start();
 
-
-
         boolean game = true;
         while (game) {
             String action = reader.readLine();
             switch (action) {
-                /*case "w" -> snake = actions.movUp(snake, gameField, apple);
-                case "a" -> snake = actions.movLeft(snake, gameField,apple);
-                case "s" -> snake = actions.movDown(snake, gameField, apple);
-                case "d" -> snake = actions.movRight(snake, gameField, apple);*/
                 case "w" -> actions.changeActionUp();
                 case "a" -> actions.changeActionLeft();
                 case "s" -> actions.changeActionDown();
@@ -73,10 +72,6 @@ public class Main {
                 case "exit" -> game = false;
                 default -> System.out.println("input error");
             }
-            /*gameField.createOrRefreshGameField();
-            gameField.addSnake(snake);
-            gameField.display(apple);
-            actions.isDead(snake, apple);*/
         }
 
     }
